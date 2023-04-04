@@ -1,5 +1,6 @@
 const express = require('express')
 const ideasRouter = express.Router()
+const checkMillionDollarIdea = require('./checkMillionDollarIdea')
 
 //Import DB helper functions
 const db = require('./db')
@@ -9,9 +10,9 @@ ideasRouter.get('/', (req, res, next) => {
   res.send(allIdeas)
 })
 
-ideasRouter.post('/', (req, res, next) => {
+ideasRouter.post('/', checkMillionDollarIdea, (req, res, next) => {
   try {
-    const returnedIdea = db.addToDatabase('ideas', req.body)
+    const returnedIdea = db.addToDatabase('ideas', req.idea)
     if (returnedIdea) {
       res.status(201).send(returnedIdea)
     }
@@ -41,9 +42,9 @@ ideasRouter.get('/:ideaId', (req, res, next) => {
   res.status(200).send(selectedIdea)
 })
 
-ideasRouter.put('/:ideaId', (req, res, next) => {
+ideasRouter.put('/:ideaId', checkMillionDollarIdea, (req, res, next) => {
   try {
-    let updatedIdea = db.updateInstanceInDatabase('ideas', req.body)
+    let updatedIdea = db.updateInstanceInDatabase('ideas', req.idea)
     if (updatedIdea) {
       res.status(200).send(updatedIdea)
     }

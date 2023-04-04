@@ -9,25 +9,15 @@ meetingsRouter.get('/', (req, res, next) => {
   res.send(allMeetings)
 })
 
-/*
-
-Meeting
-time: string
-date: JS Date object
-day: string
-note: string
-
-*/
-
 meetingsRouter.post('/', (req, res, next) => {
-  // No request body is necessary, meetings are generated automatically
-  // use createMeeting function exproted from db.js
-
-  // create a new meeting and save it to the database
+  const newMeeting = db.createMeeting()
+  const returnedMeeting = db.addToDatabase('meetings', newMeeting)
+  res.status(201).send(returnedMeeting)
 })
 
 meetingsRouter.delete('/', (req, res, next) => {
-  // delete all meetings from the database
+  const currentMeetings = db.deleteAllFromDatabase('meetings')
+  res.status(204).send(currentMeetings)
 })
 
 module.exports = meetingsRouter
